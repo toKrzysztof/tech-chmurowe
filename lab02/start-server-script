@@ -1,0 +1,26 @@
+#!/bin/bash
+echo "FROM node:12
+
+COPY server.js .
+
+EXPOSE 8080
+
+CMD node server.js
+" > Dockerfile
+
+echo "const http = require('http')
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+
+  res.end('Hello World\n');
+});
+
+server.listen(8080);
+
+console.log('Hello world')
+" > server.js
+
+docker build -t node .
+
+docker run -p 8080:8080 node

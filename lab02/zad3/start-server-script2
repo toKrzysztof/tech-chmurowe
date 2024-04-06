@@ -1,0 +1,64 @@
+#!/bin/bash
+
+echo "FROM mongo:latest
+
+EXPOSE 8080
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y curl
+
+RUN curl -s https://deb.nodesource.com/setup_16.x | bash && apt-get install -y nodejs
+" > Dockerfile
+
+COPY package.json .
+
+RUN npm install
+
+COPY server.js .
+
+CMD node server.js
+" > Dockerfile
+
+echo "{
+  \"dependencies\": {
+    \"express\": \"4.18.3\"
+  }
+}
+" > package.json
+
+echo "const express = require('express');
+const app = express();
+
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/cats').then(res => console.log(res));
+
+const Cat = mongoose.model('Cat', { name: String });
+
+const kitty = new Cat({ name: 'Zildjian' });
+kitty.save().then(() => console.log('meow'));
+
+app.get('/cats', (req, res) => {
+  
+});
+
+app.post('/cat', (req, res) => {
+  
+});
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.listen(8080, () => {
+  console.log('Server is running on port ' + 8080);
+});
+" > server.js
+
+docker build -t node .
+
+docker run -p 8080:8080 node
+
+docker build -t mongo-express-node .
+
+docker run -p 8080:8080 mongo-express-node
