@@ -1,0 +1,21 @@
+ARG PYTHON_VERSION=3.11.9
+
+FROM python:${PYTHON_VERSION}-alpine
+
+ARG PORT=8080
+ARG TEST=TEST
+ARG TEST2
+
+ENV SERVER_PORT=$PORT
+ENV VERRRSION=$PYTHON_VERSION 
+ENV TEST=$TEST
+ENV TEST2=$TEST2
+
+WORKDIR /opt/app
+
+COPY server.py ./
+
+RUN pip install flask
+
+CMD ["python", "server.py"]
+

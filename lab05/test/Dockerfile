@@ -1,0 +1,10 @@
+FROM python
+
+ARG TEST
+ARG PORT=9000
+ENV TEST=$TEST
+ENV SERVER_PORT=$PORT
+
+COPY test.py ./
+
+CMD python test.py
