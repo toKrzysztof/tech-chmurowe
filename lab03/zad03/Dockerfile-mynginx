@@ -1,5 +1,11 @@
 FROM nginx
 
+WORKDIR /cert
+
+RUN apt-get install -y openssl \
+    && openssl genpkey -algorithm RSA -out private-key.key \
+    && openssl req -new -x509 -days 365 -key private-key.key -out certificate_CA.pem -subj "/C=US/ST=State/L=City/O=Organization/OU=Organizational Unit/CN=Common Name"
+
 COPY default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
