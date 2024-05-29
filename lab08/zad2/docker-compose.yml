@@ -1,0 +1,17 @@
+services:
+  web:
+    build: .
+    container_name: server
+    ports:
+      - "$APP_PORT:$APP_PORT"
+    environment:
+      - REDIS_HOST=$REDIS_HOST
+      - REDIS_PORT=$REDIS_PORT
+      - APP_PORT=$APP_PORT
+    depends_on:
+      - redis
+  redis:
+    image: "redis"
+    container_name: redis
+    ports: 
+      - "$REDIS_PORT:6379"
