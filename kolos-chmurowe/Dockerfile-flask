@@ -1,0 +1,12 @@
+FROM python
+
+WORKDIR /opt/app
+
+RUN pip install flask \
+    && pip install python-dotenv
+
+COPY server.py ./
+
+ENV APP_PORT=8080
+
+CMD python server.py
