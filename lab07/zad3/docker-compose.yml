@@ -1,0 +1,28 @@
+services:
+  database:
+    image: mongo:${MONGO_VERSION}
+    container_name: db
+    restart: always
+    ports:
+      - "${MONGO:PORT}:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - net_A
+
+  backend:
+    container_name: server
+    ports:
+      - "3003:3000"
+    depends_on:
+      - database
+    build: .      
+    networks:
+      - net_A
+
+networks:
+  net_A:
+    external: false # albo driver: bridge
+
+volumes:
+  mongo_data:
