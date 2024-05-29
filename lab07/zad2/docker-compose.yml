@@ -1,7 +1,7 @@
 services:
   database:
     image: mongo:4.1.13
-    container_name: mongodb
+    container_name: db
     restart: always
     ports:
       - "27019:27017"
@@ -12,17 +12,17 @@ services:
 
   backend:
     container_name: server
-    image: test
     ports:
-      - "3003:3003"
+      - "3003:3000"
     depends_on:
       - database
+    build: .      
     networks:
       - net_A
 
 networks:
   net_A:
-    driver: bridge
+    external: false
 
 volumes:
   mongo_data:
